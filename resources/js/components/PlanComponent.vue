@@ -7,7 +7,7 @@
     <button v-show="mode=='change'" type="button" @click="destroy">削除しちゃうのおおおお！！</button>
     <ul>
         <li v-for="(event, index) in body" v-bind:key="index" v-bind:index="index" @click="remove">
-            <input type="time" step="600" @blur="refresh" v-model="event[0]"> : <input type="text" v-model="event[1]">
+            <input type="time" step="600" @blur="refresh" v-model="event[0]" v-bind:index="index"> : <input type="text" @blur="refresh" v-model="event[1]" v-bind:index="index">
         </li>
     </ul>
 </div>

@@ -38307,7 +38307,7 @@ var render = function() {
                   expression: "event[0]"
                 }
               ],
-              attrs: { type: "time", step: "600" },
+              attrs: { type: "time", step: "600", index: index },
               domProps: { value: event[0] },
               on: {
                 blur: _vm.refresh,
@@ -38329,9 +38329,10 @@ var render = function() {
                   expression: "event[1]"
                 }
               ],
-              attrs: { type: "text" },
+              attrs: { type: "text", index: index },
               domProps: { value: event[1] },
               on: {
+                blur: _vm.refresh,
                 input: function($event) {
                   if ($event.target.composing) {
                     return
