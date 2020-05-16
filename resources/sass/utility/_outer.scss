@@ -1,0 +1,8 @@
+@mixin outer-base{
+    padding: 15px;
+}
+
+
+@mixin outer-header{
+    @include outer-base;
+}

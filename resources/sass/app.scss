@@ -1,8 +1,19 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300&family=Noto+Sans+JP:wght@300&display=swap');
 
 // Variables
 @import 'variables';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+// it's me
+@import "reset";
+@import "utility/utility";
+@import "content/content";
+@import "component/component";
+
+
+body,html{
+    height: 100%;
+}

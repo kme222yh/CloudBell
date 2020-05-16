@@ -1,0 +1,41 @@
+// フォント設定
+body{
+    font-family: "Helvetica Neue", Helvetica, Arial, 游ゴシック, YuGothic, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", メイリオ, Meiryo, sans-serif;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+// タイポグラフィ
+
+@mixin header-title{
+    font-family: 'DM Mono', monospace;
+    font-size: 25px;
+    color: $sub-sub-color;
+    text-align: left;
+    @include desktop{
+        text-align: center;
+    }
+}
+
+
+@mixin main-text($index: 2){
+    font-family: 'Noto Sans JP', sans-serif;
+    color: $sub-sub-color;
+    font-size: 15px;
+    @include tablet{
+        font-size: 18px;
+    }
+    @include desktop{
+        font-size: 20px;
+    }
+}
+
+
+@mixin nav-text{
+    font-size: 25px;
+    line-height: 40px;
+    color: white;
+    font-weight: lighter;
+    text-decoration: none;
+}

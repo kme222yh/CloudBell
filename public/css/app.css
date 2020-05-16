@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Nunito);@charset "UTF-8";
+@import url(https://fonts.googleapis.com/css2?family=DM+Mono:wght@300&family=Noto+Sans+JP:wght@300&display=swap);@charset "UTF-8";
 
 /*!
  * Bootstrap v4.4.1 (https://getbootstrap.com/)
@@ -10880,5 +10880,412 @@ a.text-dark:focus {
     color: inherit;
     border-color: #dee2e6;
   }
+}
+
+/*
+html5doctor.com Reset Stylesheet
+v1.4
+2009-07-27
+Author: Richard Clark - http://richclarkdesign.com
+*/
+
+html,
+body,
+div,
+span,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+abbr,
+address,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+samp,
+small,
+strong,
+sub,
+sup,
+var,
+b,
+i,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+dialog,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+}
+
+body {
+  line-height: 1;
+}
+
+article,
+aside,
+dialog,
+figure,
+footer,
+header,
+hgroup,
+nav,
+section {
+  display: block;
+}
+
+nav ul {
+  list-style: none;
+  list-style-type: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+
+a {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+}
+
+ins {
+  background-color: #ff9;
+  color: #000;
+  text-decoration: none;
+}
+
+mark {
+  background-color: #ff9;
+  color: #000;
+  font-style: italic;
+  font-weight: bold;
+}
+
+del {
+  text-decoration: line-through;
+}
+
+abbr[title],
+dfn[title] {
+  border-bottom: 1px dotted #000;
+  cursor: help;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #cccccc;
+  margin: 1em 0;
+  padding: 0;
+}
+
+input,
+select {
+  vertical-align: middle;
+}
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, 游ゴシック, YuGothic, "\30D2\30E9\30AE\30CE\89D2\30B4   ProN W3", "Hiragino Kaku Gothic ProN", メイリオ, Meiryo, sans-serif;
+}
+
+header {
+  background-color: #403E3C;
+  border-bottom: 2px solid #807D78;
+}
+
+header > div {
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+header > div > * {
+  width: 50%;
+}
+
+@media screen and (min-width: 769px) {
+  header > div > * {
+    width: 33%;
+  }
+}
+
+header h1 {
+  font-family: "DM Mono", monospace;
+  font-size: 25px;
+  color: #FFF9EF;
+  text-align: left;
+}
+
+@media screen and (min-width: 769px) {
+  header h1 {
+    text-align: center;
+  }
+}
+
+header h1 a,
+header h1 a:hover {
+  color: #FFF9EF;
+  text-decoration: none;
+}
+
+header p {
+  display: none;
+}
+
+@media screen and (min-width: 769px) {
+  header p {
+    display: inline;
+    font-family: "Noto Sans JP", sans-serif;
+    color: #FFF9EF;
+    font-size: 15px;
+  }
+}
+
+@media screen and (min-width: 769px) and (min-width: 481px) {
+  header p {
+    font-size: 18px;
+  }
+}
+
+@media screen and (min-width: 769px) and (min-width: 769px) {
+  header p {
+    font-size: 20px;
+  }
+}
+
+header .account_menu {
+  text-align: right;
+}
+
+header .account_menu a {
+  text-decoration: none;
+  background-color: #807D78;
+  color: #403E3C;
+  padding: 5px 15px;
+  margin-left: 5px;
+  border-radius: 50px;
+  display: inline-block;
+  transition: 0.3s;
+}
+
+header .account_menu a:hover {
+  background-color: #FFF9EF;
+}
+
+main {
+  background-color: #403E3C;
+  height: calc(100% - 62px);
+}
+
+main > div {
+  height: 100%;
+}
+
+#app {
+  font-family: "Noto Sans JP", sans-serif;
+  color: #FFF9EF;
+  font-size: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  height: 100%;
+}
+
+@media screen and (min-width: 481px) {
+  #app {
+    font-size: 18px;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  #app {
+    font-size: 20px;
+  }
+}
+
+#app .menu {
+  padding: 15px;
+  width: 250px;
+  height: 100%;
+}
+
+#app .menu ul,
+#app .menu li,
+#app .menu a {
+  width: 100%;
+}
+
+#app .menu a {
+  padding: 10px 0;
+  margin-bottom: 20px;
+  display: block;
+  text-align: center;
+  color: #FFF9EF;
+  border-radius: 50px;
+  transition: 0.3s;
+}
+
+#app .menu a:hover {
+  text-decoration: none;
+  background-color: #807D78;
+}
+
+#app .content {
+  padding: 15px;
+  background-color: #807D78;
+  width: calc(100% - 250px);
+  height: 100%;
+  overflow-y: scroll;
+}
+
+#app .content li {
+  list-style: none;
+}
+
+#plan-list ul {
+  margin-top: 80px;
+}
+
+#plan-list li {
+  margin-bottom: 40px;
+}
+
+#plan-list a {
+  font-family: "Noto Sans JP", sans-serif;
+  color: #FFF9EF;
+  font-size: 15px;
+  text-decoration: none;
+  display: inline-block;
+  padding: 10px;
+  background-color: #403E3C;
+  border-radius: 10px;
+  transition: 0.5s;
+  box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.4);
+}
+
+@media screen and (min-width: 481px) {
+  #plan-list a {
+    font-size: 18px;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  #plan-list a {
+    font-size: 20px;
+  }
+}
+
+#plan-list a:hover {
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.4);
+  transform: scale(0.995);
+}
+
+#calendar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+#calendar li {
+  display: block;
+  padding: 10px;
+  margin: 10px;
+  width: 12%;
+  height: 120px;
+  border-right: #FFF9EF 2px solid;
+  border-bottom: #FFF9EF 2px solid;
+  box-sizing: border-box;
+}
+
+#calendar a {
+  font-family: "Noto Sans JP", sans-serif;
+  color: #FFF9EF;
+  font-size: 15px;
+}
+
+@media screen and (min-width: 481px) {
+  #calendar a {
+    font-size: 18px;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  #calendar a {
+    font-size: 20px;
+  }
+}
+
+body,
+html {
+  height: 100%;
 }
 

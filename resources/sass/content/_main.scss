@@ -1,0 +1,91 @@
+main{
+    background-color: $main-color;
+    height: calc(100% - 62px);
+    &>div{
+        height: 100%;
+    }
+}
+
+#app{
+    @include main-text;
+    @include flex;
+    height: 100%;
+
+    .menu{
+        @include outer-base;
+        width: 250px;
+        height: 100%;
+        ul,li, a{
+            width: 100%;
+        }
+        a{
+            padding: 10px 0;
+            margin-bottom: 20px;
+            display: block;
+            text-align: center;
+            color: $sub-sub-color;
+            border-radius: 50px;
+            transition: .3s;
+            &:hover{
+                text-decoration: none;
+                background-color: $sub-color;
+            }
+        }
+    }
+
+    .content{
+        @include outer-base;
+        background-color: $sub-color;
+        width: calc(100% - 250px);
+        height: 100%;
+        li{
+            list-style: none;
+        }
+        overflow-y: scroll;
+    }
+}
+
+
+
+
+#plan-list{
+    ul{
+        margin-top: 80px;
+    }
+    li{
+        margin-bottom: 40px;
+    }
+    a{
+        @include main-text;
+        text-decoration: none;
+        display: inline-block;
+        padding: 10px;
+        background-color: $main-color;
+        border-radius: 10px;
+        transition: .5s;
+        box-shadow: 4px 4px 5px rgba(0,0,0,0.4);
+        &:hover{
+            box-shadow: 0 0 0 rgba(0,0,0,0.4);
+            transform: scale(0.995);
+        }
+    }
+}
+
+
+
+#calendar{
+    @include flex;
+    li{
+        display: block;
+        padding: 10px;
+        margin: 10px;
+        width: 12%;
+        height: 120px;
+        border-right: $sub-sub-color 2px solid;
+        border-bottom: $sub-sub-color 2px solid;
+        box-sizing: border-box;
+    }
+    a{
+        @include main-text;
+    }
+}

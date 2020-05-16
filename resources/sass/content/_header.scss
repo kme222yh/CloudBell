@@ -1,0 +1,47 @@
+header{
+    background-color: $main-color;
+    border-bottom: 2px solid $sub-color;
+
+    &>div{
+        @include outer-header;
+        @include flex;
+        &>*{
+            width: 50%;
+            @include desktop{
+                width: 33%;
+            }
+        }
+    }
+    h1{
+        @include header-title;
+        a, a:hover{
+            color: $sub-sub-color;
+            text-decoration: none;
+        }
+    }
+    p{
+        display: none;
+        @include desktop{
+            display: inline;
+            @include main-text;
+        }
+    }
+
+    .account_menu{
+        text-align: right;
+        a{
+            text-decoration: none;
+            background-color: $sub-color;
+            color: $main-color;
+            padding: 5px 15px;
+            margin-left: 5px;
+            border-radius: 50px;
+            display: inline-block;
+            transition: .3s;
+            &:hover{
+                background-color: $sub-sub-color;
+                // color: $sub-sub-color;
+            }
+        }
+    }
+}

@@ -14,6 +14,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+// cookieのミドルウェアを勝手に割当
+Route::middleware([\App\Http\Middleware\EncryptCookies::class])->prefix('plan')->group(function(){
+    Route::get('', 'PlanController@list');
+    Route::get('/{id}', 'PlanController@show');
+    Route::put('/{id}', 'PlanController@update');
+    Route::post('', 'PlanController@create');
+    Route::delete('/{id}', 'PlanController@destroy');
+});
+
+
+Route::middleware([\App\Http\Middleware\EncryptCookies::class])->prefix('calendar')->group(function(){
+    Route::get('/{date}', 'CalendarController@list');
+    Route::post('{date}/{plan_id}', 'CalendarController@add');
+    Route::delete('/{date}', 'CalendarController@remove');
 });
