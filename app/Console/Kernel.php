@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $line = resolve('App\Container\Lineentrance');
+        $line = resolve('App\Container\LineEntrance');
         $planer = resolve('App\Container\Planer');
         $calendar = resolve('App\Container\Calendarer');
         $now = Carbon::now()->format('H:i');

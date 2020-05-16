@@ -13,12 +13,6 @@
 </div>
 </template>
 
-<style scoped>
-    ul{
-        margin-top: 50px;
-    }
-</style>
-
 <script>
     export default {
         data: ()=>({
@@ -34,6 +28,9 @@
                 this.name = response.data.name
                 this.body = response.data.body
             })
+        },
+        beforeDestroy(){
+            this.$store.dispatch('get_plans')
         },
         methods: {
             update: function(){

@@ -11253,6 +11253,7 @@ main > div {
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
+  padding-top: 140px;
 }
 
 #calendar li {
@@ -11282,6 +11283,31 @@ main > div {
   #calendar a {
     font-size: 20px;
   }
+}
+
+#calendar_info {
+  padding: 15px;
+  position: absolute;
+  top: 62px;
+  right: 0;
+  width: calc(100% - 250px);
+  background: linear-gradient(rgba(1, 1, 1, 0.7), rgba(1, 1, 1, 0.5));
+}
+
+#calendar_info p {
+  margin-bottom: 20px;
+}
+
+#calendar_info ul {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+#calendar_info li {
+  height: 60px;
+  border: none;
 }
 
 body,

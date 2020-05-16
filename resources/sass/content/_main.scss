@@ -75,6 +75,7 @@ main{
 
 #calendar{
     @include flex;
+    padding-top: 140px;
     li{
         display: block;
         padding: 10px;
@@ -87,5 +88,23 @@ main{
     }
     a{
         @include main-text;
+    }
+}
+#calendar_info{
+    @include outer-base;
+    position: absolute;
+    top: 62px;
+    right: 0;
+    width: calc(100% - 250px);
+    background: linear-gradient(rgba(.7,.7,.7,.7), rgba(.7,.7,.7,.5));
+    p{
+        margin-bottom: 20px;
+    }
+    ul{
+        @include flex;
+    }
+    li{
+        height: 60px;
+        border: none;
     }
 }

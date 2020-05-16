@@ -12,12 +12,6 @@
 </div>
 </template>
 
-<style scoped>
-    ul{
-        margin-top: 50px;
-    }
-</style>
-
 <script>
     export default {
         data: ()=>({
@@ -25,6 +19,9 @@
             body: [['10:00', 'event1'], ['12:00', 'event2']],
             mode: 'change',
         }),
+        beforeDestroy(){
+            this.$store.dispatch('get_plans')
+        },
         methods: {
             create: function(){
                 const url = 'api/plan'
@@ -33,7 +30,7 @@
                     body: this.body
                 }
                 axios.post(url, param).then(res=>{
-                    this.$router.push({name: 'plan', params:{planId: res.data.plan_id}})
+                    this.$router.push({name: 'plans'})
                 }).catch(error=>{
                     console.log(error)
                 })
