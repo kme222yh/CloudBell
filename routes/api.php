@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('config', 'MainController@config');
+
 // cookieのミドルウェアを勝手に割当
 Route::middleware([\App\Http\Middleware\EncryptCookies::class])->prefix('plan')->group(function(){
     Route::get('', 'PlanController@list');
@@ -25,7 +27,7 @@ Route::middleware([\App\Http\Middleware\EncryptCookies::class])->prefix('plan')-
 
 
 Route::middleware([\App\Http\Middleware\EncryptCookies::class])->prefix('calendar')->group(function(){
-    Route::get('/{date}', 'CalendarController@list');
-    Route::post('{date}/{plan_id}', 'CalendarController@add');
-    Route::delete('/{date}', 'CalendarController@remove');
+    Route::get('/{year}/{month}', 'CalendarController@list')->where(['year'=>'\d{4}', 'month'=>'\d{1,2}']);
+    Route::post('{date}/{plan_id}', 'CalendarController@add')->where(['date'=>'\d{4}-\d{1,2}-\d{1,2}', 'plan_id'=>'\d+']);
+    Route::delete('/{date}', 'CalendarController@remove')->where(['date'=>'\d{4}-\d{1,2}-\d{1,2}']);
 });

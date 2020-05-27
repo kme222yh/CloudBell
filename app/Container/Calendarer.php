@@ -1,104 +1,111 @@
 <?php
 
+/*まとめ
+
+list
+受け取った年と月に該当するイベントたちの配列を返す
+yearとmonthが数字なのかは事前にチェックしてね
+eventが見つからなくても何も言わずに空の配列を返す
+
+add
+eventを追加する。日付とidを受け取る
+
+remove
+eventを取り消す
+
+*/
+
+
+
+
+
 namespace App\Container;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 use Validator;
+use App\Container\Container;
 
-class Calendarer
+class Calendarer extends Container
 {
-    private $config = [];
-    private $user_id = null;
 
-
-    public $calendar = null;
-    public $result = false;
-    public $error = null;
-
-
-
-
-    public function __construct(){
-        $this->config['previous'] = env('CALENDAR_PREVIOUS');
-        $this->config['feature'] = env('CALENDAR_FEATURE');
-        $this->config['list_column'] = explode(',', env('CALENDAR_LIST_COLUMN'));
-    }
-
-
-
-    public function setting($user_id){
-        if(!$user_id){
-            $this->error = 'user_id error';
+    public function list($year, $month){
+        if($this->is_status_bad()){
             return;
         }
-        $this->user_id = $user_id;
-        $this->result = true;
-    }
-
-
-
-    public function list($date){
-        if($this->result == false){
+        $this->status_bad();
+        if(12<$month || !$this->is_date_between_lange($year.'-'.$month.'-1')){
+            $this->set_error(302);
             return;
         }
-        $this->result = false;
-        $date = new Carbon($date);
+        $date = new Carbon($year.'-'.$month.'-1');
         $start = $date->firstOfMonth()->format('Y-m-d');
         $end = $date->lastOfMonth()->format('Y-m-d');
-        $this->calendar = DB::table('calendar')->select($this->config['list_column'])->where('user_id', $this->user_id)->where('date', '>=', $start)->where('date', '<=', $end)->get();
-        if(!$this->calendar){
-            $this->error = 'did not find calendar';
-            return;
-        }
-        $this->result = true;
+        $this->result = DB::table('calendar')->select(config('calendar.list_column'))->where('user_id', $this->user_id)->where('date', '>=', $start)->where('date', '<=', $end)->get();
+        $this->status_ok();
     }
 
 
     public function add($date, $plan_id){
-        if($this->result == false){
+        if($this->is_status_bad()){
             return;
         }
-        $this->result = false;
-        $pre = new Carbon;
-        $pre->addMonth(-$this->config['previous']);
-        $suf = new Carbon;
-        $suf->addMonth($this->config['feature']);
-        if(!Carbon::parse($date)->between($pre, $suf)){
-            $this->error = 'this date is out of calendar';
+        $this->status_bad();
+        if(!$this->is_date_between_lange($date)){
+            $this->set_error(302);
             return;
         }
-        if(DB::table('calendar')->select(['date'])->where('user_id', $this->user_id)->where('date', $date)->first()){
-            $this->error = 'event was duplicated in calendar';
+        if(DB::table('calendar')->where('user_id', $this->user_id)->where('date', $date)->exists()){
+            $this->set_error(303);
             return;
         }
         DB::table('calendar')->insert(['plan_id'=>$plan_id, 'date'=>$date, 'user_id'=>$this->user_id]);
-        $this->result = true;
+        $this->status_ok();
     }
 
 
     public function remove($date){
-        if($this->result == false){
+        if($this->is_status_bad()){
             return;
         }
-        $this->result = false;
-        if(!DB::table('calendar')->select(['date'])->where('user_id', $this->user_id)->where('date', $date)->first()){
-            $this->error = 'failed to remove event from plan';
+        $this->status_bad();
+        if(DB::table('calendar')->where('user_id', $this->user_id)->where('date', $date)->doesntExist()){
+            $this->set_error(304);
             return;
         }
         DB::table('calendar')->where('user_id', $this->user_id)->where('date', $date)->delete();
-        $this->result = true;
+        $this->status_ok();
     }
 
 
-    public function todays(){
-        return $this->calendar = DB::table('calendar')->select(['user_id', 'plan_id'])->where('date', today())->get();
+
+
+    static public function todays(){
+        return DB::table('calendar')->select(['user_id', 'plan_id'])->where('date', today())->get();
     }
 
-
-    public function crean(){
+    static public function clean(){
+        if(now()->format('dHi')!='10000')
+            return;
         $pre = new Carbon;
-        $pre->addMonth(-$this->config['previous']);
+        $pre->addMonth(-env('CALENDAR_PREVIOUS'));
         DB::table('calendar')->where('date', '<', $pre)->delete();
+    }
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+    private function is_date_between_lange($date){
+        $pre = new Carbon;
+        $pre->addMonth(-config('calendar.lange.previous'))->firstOfMonth();
+        $suf = new Carbon;
+        $suf->addMonth(config('calendar.lange.feature'))->lastOfMonth();
+        return Carbon::parse($date)->between($pre, $suf);
     }
 }

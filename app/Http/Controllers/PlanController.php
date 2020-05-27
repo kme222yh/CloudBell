@@ -12,10 +12,10 @@ class PlanController extends Controller
         $line->login();
         $planer->setting($line->user->id);
         $planer->list();
-        if($planer->result == false){
-            return response(['error'=>'400', 'error_description'=>$planer->error], 400);
+        if($planer->is_status_bad()){
+            return response($planer->get_error(), 400);
         }
-        return $planer->plans;
+        return $planer->get_result();
     }
 
 
@@ -23,11 +23,10 @@ class PlanController extends Controller
         $line->login();
         $planer->setting($line->user->id);
         $planer->show($id);
-        if($planer->result == false){
-            return response(['error'=>'400', 'error_description'=>$planer->error], 400);
+        if($planer->is_status_bad()){
+            return response($planer->get_error(), 400);
         }
-        unset($planer->plan['user_id']);
-        return $planer->plan;
+        return $planer->get_result();
     }
 
 
@@ -35,8 +34,8 @@ class PlanController extends Controller
         $line->login();
         $planer->setting($line->user->id);
         $planer->update($id, $request->input());
-        if($planer->result == false){
-            return response(['error'=>'400', 'error_description'=>$planer->error], 400);
+        if($planer->is_status_bad()){
+            return response($planer->get_error(), 400);
         }
     }
 
@@ -45,9 +44,10 @@ class PlanController extends Controller
         $line->login();
         $planer->setting($line->user->id);
         $planer->create($request->input());
-        if($planer->result == false){
-            return response(['error'=>'400', 'error_description'=>$planer->error], 400);
+        if($planer->is_status_bad()){
+            return response($planer->get_error(), 400);
         }
+        return $planer->get_result();
     }
 
 
@@ -55,8 +55,8 @@ class PlanController extends Controller
         $line->login();
         $planer->setting($line->user->id);
         $planer->destroy($id);
-        if($planer->result == false){
-            return response(['error'=>'400', 'error_description'=>$planer->error], 400);
+        if($planer->is_status_bad()){
+            return response($planer->get_error(), 400);
         }
     }
 }

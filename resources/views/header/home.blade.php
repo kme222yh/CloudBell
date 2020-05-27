@@ -6,7 +6,7 @@
 
 
 
-<div class="account_menu">
+<div class="account_menu nologin">
     <a href="{{ $login_url }}">Login</a>
     <a href="{{ $register_url }}">Register</a>
 </div>

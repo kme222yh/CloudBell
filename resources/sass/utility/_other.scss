@@ -77,9 +77,9 @@ $break-point: 769 481;
 
 // 色関係
 $main-color: #403E3C;
-$sub-color: #807D78;
+$sub-color: #BAB5AF;
 $sub-sub-color: #FFF9EF;
-$c: #400800 #E61F00;
+$c: #4D0D06 #C20300 #005252 #00B6C2;
 @function c($index){
     @return nth($c, $index);
 }

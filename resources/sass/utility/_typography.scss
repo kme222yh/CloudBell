@@ -10,11 +10,11 @@ body{
 
 @mixin header-title{
     font-family: 'DM Mono', monospace;
-    font-size: 25px;
+    font-size: 18px;
     color: $sub-sub-color;
-    text-align: left;
+    text-align: center;
     @include desktop{
-        text-align: center;
+        font-size: 25px;
     }
 }
 
@@ -38,4 +38,17 @@ body{
     color: white;
     font-weight: lighter;
     text-decoration: none;
+}
+
+
+@mixin calendar-text{
+    font-family: 'DM Mono', monospace, 'Noto Sans JP', sans-serif;
+    color: $sub-sub-color;
+    font-size: 10px;
+    @include tablet{
+        font-size: 13px;
+    }
+    @include desktop{
+        font-size: 18px;
+    }
 }

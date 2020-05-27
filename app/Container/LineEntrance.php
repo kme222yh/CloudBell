@@ -8,7 +8,7 @@ Lineサーバーからredirectされてないと失敗します
 
 register
 ユーザー情報を元にワシのデータベースに登録します
-authを先に呼び出してないと失敗します
+必ずauthを先に呼び出してください
 
 login
 データベースからユーザー情報を取り出します
@@ -18,27 +18,24 @@ cookieがなくauthも呼ばれてなければ失敗します
 
 logout
 ログアウト
-実は直前でloginが呼ばれてないと例外が発生するかもね
 
 withdraw
 退会処理
 logoutを内包しており、最後にユーザーデータを完全に削除します
 
+push_messages
+lineにプッシュメッセージを送信する
+[
+    ['to'=>'ユーザーid', 'text'=>'本文'],
+    ...
+]   これをわたせ
+cron用
+
 user
 ユーザー情報のモデル
 login,registerのいずれかが成功すると使用可能
 
-error
-エラーが起きた時にここにメッセージが入る
-
-result
-エラーが起きちゃってた時はfalseが入ってる
-
 */
-
-
-
-
 
 
 
@@ -51,8 +48,9 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cookie;
 use Validator;
 use App\User;
+use App\Container\Container;
 
-class LineEntrance
+class LineEntrance extends Container
 {
     private $oath;
     private $message;
@@ -60,40 +58,46 @@ class LineEntrance
     private $user_param = [];
 
     public $user = null;
-    public $error = null;
-    public $result = true;
 
     public function __construct(Request $request){
         $this->oath = new \stdClass;
-        $this->oath->id = env('LINE_LOGIN_CHANNEL_ID');
-        $this->oath->secret = env('LINE_LOGIN_CHANNEL_SECRET');
+        $this->oath->id = config('line.login.id');
+        $this->oath->secret = config('line.login.secret');
         $this->oath->request_url = $request->url();
-        $this->oath->host = env('LINE_LOGIN_API_HOST');
+        $this->oath->host = config('line.host.api');
         $this->oath->code = $request->code;
 
         $this->message = new \stdClass;
-        $this->message->id = env('LINE_MESSAGING_CHANNEL_ID');
-        $this->message->secret = env('LINE_MESSAGIN_CHANNEL_SECRET');
-        $this->message->access_token = env('LINE_MESSAGING_CHANNEL_ACCESS_TOKEN');
+        $this->message->id = config('line.messagin.id');
+        $this->message->secret = config('line.messaging.secret');
+        $this->message->access_token = config('line.messaging.token');
 
         $this->query = $request->query();
         $this->user_param['id'] = $request->cookie('id');
+
+        $this->status_ok();
     }
 
+
+
+
+
+
+
     public function auth(){
-        $this->result = false;
+        $this->status_bad();
         $validate_rule = [
             'code' => 'required',
             'state' => 'in:'.csrf_token(),
         ];
         $validator = Validator::make($this->query, $validate_rule);
         if($validator->fails()){
-            $this->error = 'failed to validation in auth';
+            $this->set_error(101);
             return;
         }
         $response = $this->issue_access_token();
         if($response === false){
-            $this->error = 'failed to issue_token in auth';
+            $this->set_error(102);
             return;
         }
         $this->user_param['access_token'] = $response['access_token'];
@@ -102,43 +106,44 @@ class LineEntrance
         $this->user_param['expires_at'] = now()->addSecond($response['expires_in']);
         $response = $this->get_profile($this->user_param['access_token']);
         if($response === false){
-            $this->error = 'failed to get_profile in auth';
+            $this->set_error(103);
             return;
         }
         $this->user_param['id'] = $response['userId'];
         $this->user_param['name'] = $response['displayName'];
-        $this->result = true;
+        $this->status_ok();
     }
 
 
     public function register(){
-        if($this->result == false){
+        if($this->is_status_bad()){
             return;
         }
-        $this->result = false;
+        $this->status_bad();
         $this->user = new User;
         $this->user->fill($this->user_param);
         if(User::find($this->user->id)){
-            $this->error = 'it was duplicated in register';
+            $this->set_error(104);
             return;
         }
         $this->user->save();
-        $this->result = true;
+        Cookie::queue('id', $this->user->id, time()+60*60*24*7);
+        $this->status_ok();
     }
 
 
     public function login(){
-        if($this->result == false){
+        if($this->is_status_bad()){
             return;
         }
-        $this->result = false;
+        $this->status_bad();
         if(!$this->user_param['id']){
-            $this->error = 'did not find user-information';
+            $this->set_error(105);
             return;
         }
         $this->user = User::find($this->user_param['id']);
         if(!$this->user){
-            $this->error = 'you maybe did not rester';
+            $this->set_error(106);
             return;
         }
         $expires_at = new Carbon($this->user->expires_at);
@@ -146,7 +151,7 @@ class LineEntrance
             $response = $this->refresh_access_token();
             if($response === false){
                 $this->user = null;
-                $this->error = 'failed to update token';
+                $this->set_error(107);
                 return;
             }
             $this->user_param['access_token'] = $response['access_token'];
@@ -156,21 +161,24 @@ class LineEntrance
         $this->user_param['last_logged_in'] = now();
         $this->user->fill($this->user_param);
         $this->user->save();
-        $this->result = true;
+        Cookie::queue('id', $this->user->id, time()+60*60*24*7);
+        $this->status_ok();
     }
 
 
     public function logout(){
-        if($this->result == false){
+        if($this->is_status_bad()){
             return;
         }
         Cookie::queue('id', null, time() - 3600);
-        $this->revoke_access_token();
+        if(!is_null($this->user)){
+            $this->revoke_access_token();
+        }
     }
 
 
     public function withdraw(){
-        if($this->result == false || !$this->user){
+        if($this->is_status_bad() || is_null($this->user)){
             return;
         }
         $this->logout();
@@ -179,23 +187,26 @@ class LineEntrance
 
 
 
-    public function push_message($message, $user_id){
+    static public function push_messages($messages){
         $url = 'https://api.line.me/v2/bot/message/push';
         $headers = [
             'Content-Type' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->message->access_token,
+            'Authorization' => 'Bearer ' . config('line.messagin.token'),
         ];
         $params = [
-            'to' => $user_id,
+            'to' => '',
             'messages' => [
                 [
                     'type' => 'text',
-                    'text' => $message,
+                    'text' => '',
                 ],
             ],
         ];
-        $response = Http::withHeaders($headers)->post($url, $params);
-        return $response;
+        foreach($messages as $message){
+            $params['to'] = $message['to'];
+            $params['messages'][0]['text'] = $message['text'];
+            $response = Http::withHeaders($headers)->post($url, $params);
+        }
     }
 
 

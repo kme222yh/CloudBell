@@ -1,0 +1,141 @@
+#plan-list{
+    @include outer-base;
+    height: 100%;
+    width: 100%;
+    overflow-y: scroll;
+    ul{
+        margin-top: 80px;
+    }
+    li{
+        margin-bottom: 40px;
+    }
+    a{
+        @include main-text;
+        text-decoration: none;
+        display: inline-block;
+        padding: 10px;
+        background-color: $main-color;
+        border-radius: 10px;
+        transition: .5s;
+        box-shadow: 4px 4px 5px rgba(0,0,0,0.4);
+        &:hover{
+            box-shadow: 0 0 0 rgba(0,0,0,0.4);
+            transform: scale(0.995);
+        }
+    }
+    a>p:first-child{
+        margin-bottom: 10px;
+    }
+
+
+    @include desktop{
+        a>p{
+            display: inline-block;
+            margin: 0;
+        }
+        a>p:first-child{
+            margin-right: 20px;
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+#plan-discription{
+    @include outer-base;
+    height: 100%;
+    width: 100%;
+    overflow-y: scroll;
+
+    .manager, h2, ul{
+        margin-bottom: 50px;
+        &:last-child{
+            margin-bottom: 0;
+        }
+        @include desktop{
+            margin-bottom: 60px;
+        }
+    }
+
+    input{
+        border: none;
+        &:focus{
+            outline: 0;
+            box-shadow: 0 0 2px 3px rgba(0,123,255,.7);
+        }
+    }
+
+    h2 input{
+            width: 100%;
+            padding: 15px;
+            border-radius: 30px;
+    }
+
+    .manager{
+        @include flex;
+        width: calc(100% - #{$opener-width} );
+        button{
+            width: 48%;
+            padding: 10px;
+            border-radius: 30px;
+            color: $sub-sub-color;
+            &:first-child{
+                background-color: c(1);
+                border: 2px solid c(1);
+            }
+            &:last-child{
+                background-color: c(3);
+                border: 2px solid c(3);
+            }
+        }
+        @include desktop{
+            width: 100%;
+            button{
+                transition: .3s;
+            }
+            button:hover{
+                &:first-child{
+                    background-color: c(2);
+                }
+                &:last-child{
+                    background-color: c(4);
+                }
+            }
+        }
+    }
+
+    .body-editer{
+        @include flex;
+        flex-wrap: nowrap;
+        margin-bottom: 15px;
+        input{
+            padding: 0 5px;
+        }
+        input:first-of-type{
+            border-radius: 30px 10px 10px 30px;
+            margin-right: 5px;
+        }
+        input:last-of-type{
+            border-radius: 10px 30px 30px 10px;
+            flex-grow: 1;
+            margin-left: 5px;
+            margin-right: 10px;
+        }
+        button{
+            @include main-text;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+        @include desktop{
+            margin-bottom: 20px;
+        }
+    }
+}

@@ -1,17 +1,23 @@
+$header-height-mobile : 43px;
+$header-height-desktop : 62px;
+
+
 header{
-    background-color: $main-color;
     border-bottom: 2px solid $sub-color;
+    width: 100%;
 
     &>div{
-        @include outer-header;
+        @include outer-base;
+        @include outer-limit;
         @include flex;
         &>*{
-            width: 50%;
+            width: 100%;
             @include desktop{
                 width: 33%;
             }
         }
     }
+
     h1{
         @include header-title;
         a, a:hover{
@@ -19,6 +25,7 @@ header{
             text-decoration: none;
         }
     }
+
     p{
         display: none;
         @include desktop{
@@ -28,20 +35,21 @@ header{
     }
 
     .account_menu{
+        display: none;
+        @include desktop{
+            display: block;
+        }
         text-align: right;
-        a{
-            text-decoration: none;
-            background-color: $sub-color;
-            color: $main-color;
-            padding: 5px 15px;
-            margin-left: 5px;
-            border-radius: 50px;
-            display: inline-block;
-            transition: .3s;
-            &:hover{
-                background-color: $sub-sub-color;
-                // color: $sub-sub-color;
-            }
+    }
+    .account_menu.nologin{ //　これは消す
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        text-align: center;
+        @include desktop{
+            position: static;
+            text-align: right;
         }
     }
 }

@@ -1,8 +1,8 @@
-<p>こんにちわ {{ $username }}さん(´・ω・｀)</p>
+<p class="greeting">{{ $username }}</p>
 
 
 
-<h1><a href="/">@php echo env('APP_NAME'); @endphp</a></h1>
+<h1><a href="/">@php echo config('app.name'); @endphp</a></h1>
 
 
 

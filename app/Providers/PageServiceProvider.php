@@ -24,6 +24,6 @@ class PageServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::composer('page.home', 'App\Http\Composers\HomeComposer');
+        View::composer('header.home', 'App\Http\Composers\HomeComposer');
     }
 }

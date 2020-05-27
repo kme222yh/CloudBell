@@ -1,134 +1,148 @@
 <?php
 
+/*まとめ
+
+list
+プランのぺ時ネーションをする。整数（ページ）を一つわたせ。渡さなかったら1ページ目として扱われる
+まだ先があるかどうかは特に教えてくれない
+
+show
+idから探して持ち主がユーザーと一致すればあったと、しなければなかったと答える
+
+update
+id , paramを受け取る
+プランの捜索に関してはshowと同じ
+bodyの時間の最小感覚をチェックする
+
+create
+既存のプランの数を数える。はみ出してたら失敗する
+validationはupdateと同じ
+
+destroy
+プランの削除
+プランの搜索に関してはshowと同じ
+
+
+id_to_body
+idを受け取り対応するプランのbodyを返す
+各種チェックは一切しない
+cron用
+
+*/
+
+
+
+
+
+
+
+
+
 namespace App\Container;
 
 use Illuminate\Support\Facades\DB;
 use Validator;
 use App\Plan;
+use App\Container\Container;
 
-class Planer
+class Planer extends Container
 {
-    private $config = [];
-    private $user_id = null;
-
-
-    public $plan = null;
-    public $plans = null;
-    public $result = false;
-    public $error = null;
-
-
-
-    public function __construct(){
-        $this->config['max_plans'] = env('PLAN_MAX_NUMBER');
-        $this->config['max_once'] = env('PLAN_ONCE_LISTS');
-        $this->config['list_column'] = explode(',', env('PLAN_LIST_COLUMN'));
-        $this->config['plan_interval'] = env('PLAN_MINIMUM_EVENT_INTERVAL');
-    }
-
-
-    public function setting($user_id){
-        if(!$user_id){
-            $this->error = 'user_id error';
-            return;
-        }
-        $this->user_id = $user_id;
-        $this->result = true;
-    }
-
 
     public function list($page = 1){
-        if($this->result == false){
+        if($this->is_status_bad()){
             return;
         }
-        $this->result = false;
+        $this->status_bad();
         if($page < 1){
-            $this->error = 'plans pagenation error';
+            $this->set_error(201);
             return;
         }
-        $this->plans = DB::table('plans')->select($this->config['list_column'])->where('user_id', $this->user_id)->offset($this->config['max_once']*($page-1))->limit($this->config['max_once'])->get();
-        if(!$this->plans){
-            $this->error = 'did not find plans';
+        $this->result = DB::table('plans')->select(config('plan.list_column'))->where('user_id', $this->user_id)->offset(config('plan.max_number')*($page-1))->limit(config('plan.per_page'))->get();
+        if(count($this->result) == 0){
+            $this->set_error(202);
             return;
         }
-        $this->result = true;
+        $this->status_ok();
     }
 
 
     public function show($id){
-        if($this->result == false){
+        if($this->is_status_bad()){
             return;
         }
-        $this->result = false;
-        $this->plan = Plan::find($id);
-        if(!$this->plan || $this->plan->user_id != $this->user_id){
-            $this->plan = null;
-            $this->error = 'did not find plan';
+        $this->status_bad();
+        $this->result = Plan::find($id);
+        if(is_null($this->result) || $this->result->user_id != $this->user_id){
+            $this->set_error(202);
             return;
         }
-        $this->result = true;
+        unset($this->result['user_id']);
+        $this->status_ok();
     }
 
 
     public function update($n, $param){
-        if($this->result == false){
+        if($this->is_status_bad()){
             return;
         }
-        $this->result = false;
-        $this->plan = Plan::find($n);
-        if(!$this->plan || $this->plan->user_id != $this->user_id || $this->param_valid_fails($param)){
-            $this->plan = null;
-            $this->error = 'something is wrong';
+        $this->status_bad();
+        $plan = Plan::find($n);
+        if(is_null($plan) || $plan->user_id != $this->user_id){
+            $this->set_error(202);
+            return;
+        }
+        if($this->param_valid_fails($param)){
+            $this->set_error(204);
             return;
         }
         else{
             $param['user_id'] = $this->user_id;
-            $this->plan->fill($param);
-            $this->plan->save();
+            $plan->fill($param);
+            $plan->save();
         }
-        $this->result = true;
+        $this->status_ok();
     }
 
 
     public function create($param){
-        if($this->result == false){
+        if($this->is_status_bad()){
             return;
         }
-        $this->result = false;
-        if(DB::table('plans')->count() >= $this->config['max_plans']){
-            $this->error = 'plans are too much';
+        $this->status_bad();
+        if(DB::table('plans')->count() >= config('plan.max_number')){
+            $this->set_error(203);
             return;
         }
-        $this->plan = new Plan;
+        $this->result = new Plan;
         if($this->param_valid_fails($param)){
-            $this->error = 'failed to create plan';
+            $this->set_error(204);
             return;
         }
         $param['user_id'] = $this->user_id;
-        $this->plan->fill($param);
-        $this->plan->save();
-        $this->result = true;
+        $this->result->fill($param);
+        $this->result->save();
+        unset($this->result['user_id']);
+        $this->status_ok();
     }
 
 
     public function destroy($id){
-        if($this->result == false){
+        if($this->is_status_bad()){
             return;
         }
-        $this->result = false;
-        $this->plan = Plan::find($id);
-        if(!$this->plan || $this->plan->user_id != $this->user_id){
-            $this->plan = null;
-            $this->error = 'failed to delete plan';
+        $this->status_bad();
+        $plan = Plan::find($id);
+        if(is_null($plan)|| $plan->user_id != $this->user_id){
+            $this->set_error(205);
             return;
         }
-        $this->plan->delete();
-        $this->result = true;
+        $plan->delete();
+        $this->status_ok();
     }
 
 
 
-    public function id_to_body($id){
+    static public function id_to_body($id){
         return Plan::find($id)->body;
     }
 
@@ -137,14 +151,20 @@ class Planer
 
 
 
-
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
     private function param_valid_fails($param){
         $validate_rule = [
-            'name' => 'required',
+            'name' => 'required|string',
             'body' => 'required',
         ];
         $validator = Validator::make($param, $validate_rule);
         if($validator->fails()){
+            return true;
+        }
+        if(mb_strlen($param['name'], 'UTF-8') > config('plan.name_max_len')){
             return true;
         }
         foreach($param['body'] as $event){
@@ -152,7 +172,7 @@ class Planer
                 return true;
             }
             $min = intval(substr($event[0],0,2))*60 + intval(substr($event[0],-2));
-            if($min % $this->config['plan_interval']){
+            if($min % config('plan.event_min_interval')){
                 return true;
             }
         }

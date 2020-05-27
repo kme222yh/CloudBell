@@ -1,8 +1,12 @@
 @mixin outer-base{
-    padding: 15px;
+    padding: 10px;
+    @include desktop{
+        padding: 15px;
+    }
 }
 
-
-@mixin outer-header{
-    @include outer-base;
+@mixin outer-limit{
+    margin: auto;
+    width: 100%;
+    max-width: 1200px;
 }

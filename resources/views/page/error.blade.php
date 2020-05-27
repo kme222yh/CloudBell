@@ -1,6 +1,8 @@
-@extends('layout')
+@extends('layout_nonvue')
 
-@section('title', 'error')
+@section('header')
+@include('header.home')
+@endsection
 
 
 @section('content')

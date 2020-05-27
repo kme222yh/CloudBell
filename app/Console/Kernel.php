@@ -6,6 +6,9 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 use Illuminate\Support\Carbon;
+use App\Container\LineEntrance;
+use App\Container\Planer;
+use App\Container\Calendarer;
 
 class Kernel extends ConsoleKernel
 {
@@ -26,34 +29,21 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $line = resolve('App\Container\LineEntrance');
-        $planer = resolve('App\Container\Planer');
-        $calendar = resolve('App\Container\Calendarer');
         $now = Carbon::now()->format('H:i');
-        $todays = $calendar->todays();
+        $todays = Calendarer::todays();
         $params = [];
         foreach($todays as $today){
             $message = '';
-            foreach($planer->id_to_body($today->plan_id) as $event){
+            foreach(Planer::id_to_body($today->plan_id) as $event)
                 if($event[0] == $now){
                     $message = $event[1];
                     break;
                 }
-            }
-            if($message != ''){
-                $params[] = [
-                    'user_id' => $today->user_id,
-                    'message' => $message,
-                ];
-            }
+            if($message != '')
+                $params[] = ['to' => $today->user_id, 'text' => $message];
         }
-        foreach($params as $param){
-            $line->push_message($param['message'], $param['user_id']);
-        }
-
-        if(today()->day == 1 || $now=='00:00'){
-            $calendar->clear();
-        }
+        LineEntrance::push_messages($params);
+        Calendarer::clean();
     }
 
     /**

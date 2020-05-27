@@ -14,6 +14,9 @@
 @import "component/component";
 
 
+body{
+    background-color: $main-color;
+}
 body,html{
     height: 100%;
 }
