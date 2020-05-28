@@ -5153,11 +5153,9 @@ input[type=button].btn-block {
 @media (min-width: 576px) {
   .card-columns {
     -moz-column-count: 3;
-         -webkit-column-count: 3;
-            column-count: 3;
+         column-count: 3;
     -moz-column-gap: 1.25rem;
-         -webkit-column-gap: 1.25rem;
-            column-gap: 1.25rem;
+         column-gap: 1.25rem;
     orphans: 1;
     widows: 1;
   }
@@ -11790,6 +11788,10 @@ main > div {
   border-radius: 30px;
 }
 
+#plan-discription ul {
+  width: 100%;
+}
+
 #plan-discription .manager {
   display: flex;
   justify-content: space-between;
@@ -11840,6 +11842,7 @@ main > div {
   flex-wrap: wrap;
   flex-wrap: nowrap;
   margin-bottom: 15px;
+  width: 100%;
 }
 
 #plan-discription .body-editer input {
@@ -11893,3 +11896,4 @@ body,
 html {
   height: 100%;
 }
+

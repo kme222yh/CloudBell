@@ -39,7 +39,7 @@
                 previous: new Date,
             },
             calendar: {},
-            interval: [],
+            interval: Array(2),
 
             day_style: {
                 height: '100px',
@@ -57,8 +57,8 @@
             document.getElementsByClassName('body')[0].scrollTop = document.getElementsByClassName('body')[0].scrollTop + height - 100
             this.reFocusAndClearCalendar()
             this.updateEvents()
-            this.interval.push(setInterval(this.month_check, 100))
-            this.interval.push(setInterval(this.ajustDayHeight))
+            this.interval[0] = (setInterval(this.month_check, 100))
+            this.interval[1] = (setInterval(this.ajustDayHeight))
         },
         beforeDestroy(){
             clearInterval(this.interval[0])
@@ -66,15 +66,15 @@
         },
         computed: {
             calendar_prefix(){
-                return (new Date(Object.keys(this.calendar)[0])).getDay()
+                return (new Date(Object.keys(this.calendar)[0].replace(/-/g,"/"))).getDay()
             },
             calendar_sufix(){
-                return 6-(new Date(Object.keys(this.calendar)[Object.keys(this.calendar).length - 1])).getDay()
+                return 6-(new Date(Object.keys(this.calendar)[Object.keys(this.calendar).length - 1].replace(/-/g,"/"))).getDay()
             },
         },
         methods: {
             date2day(date){
-                return (new Date(date)).getDate()
+                return (new Date(date.replace(/-/g,"/"))).getDate()     // replace for safari マジクソ
             },
             events2calendar(events){
                 for(event of events){

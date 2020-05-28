@@ -78,6 +78,10 @@
             border-radius: 30px;
     }
 
+    ul{
+        width: 100%;
+    }
+
     .manager{
         @include flex;
         width: calc(100% - #{$opener-width} );
@@ -115,6 +119,7 @@
         @include flex;
         flex-wrap: nowrap;
         margin-bottom: 15px;
+        width: 100%;
         input{
             padding: 0 5px;
         }
