@@ -29,7 +29,9 @@ class PlanController extends Controller
 
 
     public function update(Request $request, LineEntrance $line, Planer $planer, $id){
-        $line->login();
+        if(!$line->user){
+            return response($planer->get_error(), 400);
+        }
         $planer->setting($line->user->id);
         $planer->update($id, $request->input());
         if($planer->is_status_bad()){
