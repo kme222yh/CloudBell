@@ -29,21 +29,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $now = Carbon::now()->format('H:i');
-        $todays = Calendarer::todays();
-        $params = [];
-        foreach($todays as $today){
-            $message = '';
-            foreach(Planer::id_to_body($today->plan_id) as $event)
-                if($event[0] == $now){
-                    $message = $event[1];
-                    break;
-                }
-            if($message != '')
-                $params[] = ['to' => $today->user_id, 'text' => $message];
-        }
-        LineEntrance::push_messages($params);
-        Calendarer::clean();
+        $schedule->call(new \App\Container\LineMessage);
     }
 
     /**

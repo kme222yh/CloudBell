@@ -10,7 +10,9 @@ use App\Container\Calendarer;
 class CalendarController extends Controller
 {
     public function list(Request $request, LineEntrance $line, Calendarer $calendar, $year, $month){
-        $line->login();
+        if(!$line->user){
+            return response($planer->get_error(), 400);
+        }
         $calendar->setting($line->user->id);
         $calendar->list($year, $month);
         if($calendar->is_status_bad()){
@@ -21,7 +23,9 @@ class CalendarController extends Controller
 
 
     public function add(Request $request, LineEntrance $line, Planer $planer, Calendarer $calendar, $date, $plan_id){
-        $line->login();
+        if(!$line->user){
+            return response($planer->get_error(), 400);
+        }
         $planer->setting($line->user->id);
         $planer->show($plan_id);
         if($planer->is_status_bad()){
@@ -37,7 +41,9 @@ class CalendarController extends Controller
 
 
     public function remove(Request $request, LineEntrance $line, Calendarer $calendar, $date){
-        $line->login();
+        if(!$line->user){
+            return response($planer->get_error(), 400);
+        }
         $calendar->setting($line->user->id);
         $calendar->remove($date);
         if($calendar->is_status_bad()){

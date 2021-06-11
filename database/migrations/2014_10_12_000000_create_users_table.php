@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('access_token', 750)->unique();
             $table->string('refresh_token')->unique();
             $table->date('expires_at');
-            $table->date('last_logged_in');
+            // $table->date('last_logged_in');
             $table->timestamps();
         });
     }
