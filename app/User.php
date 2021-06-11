@@ -36,4 +36,9 @@ class User extends Authenticatable
     public function getNameAttribute($value){
         return Crypt::decrypt($value);
     }
+
+
+    public function plans(){
+        return $this->hasMany('App\Plan', 'user_id');
+    }
 }
