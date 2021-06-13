@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>@php echo env('APP_NAME'); @endphp</title>
+        <link rel="icon" type="image/png" href="{{asset('favicon.png')}}">
         <link rel="stylesheet" type="text/css" href="{{ mix('css/app.css') }}">
         <meta name="viewport" content="width=device-width,initial-scale=1">
         <meta name="bot_id" content="@php echo env('LINE_BOT_ID'); @endphp">

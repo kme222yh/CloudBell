@@ -44,12 +44,14 @@ header{
     .account_menu.nologin{ //　これは消す
         display: block;
         position: absolute;
-        top: 50%;
+        top: $header-height-mobile;
+        transform: translateY(10px);
         left: 0;
         text-align: center;
         @include desktop{
             position: static;
             text-align: right;
+            transform: none;
         }
     }
 }

@@ -11,12 +11,25 @@
         <p class="closer" @click="menuClose"><font-awesome-icon icon="times" size="2x" /></p>
         <p class="opener" @click="menuOpen"><font-awesome-icon icon="bars" size="2x" /></p>
 
+        <img id="visual-logo" src="image/CloudBell-logo.png" alt="">
+
         <div class="account_menu">
             <a href="logout">logout</a>
             <!-- <a href="withdraw">withdrow</a> -->
         </div>
     </nav>
 </template>
+
+
+<style lang="scss">
+#visual-logo{
+    margin: 0 auto;
+    display: block;
+    margin-top: 15px;
+    width: 80%;
+}
+</style>
+
 
 <script>
     export default {

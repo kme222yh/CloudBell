@@ -11143,7 +11143,8 @@ header .account_menu {
 header .account_menu.nologin {
   display: block;
   position: absolute;
-  top: 50%;
+  top: 43px;
+  transform: translateY(10px);
   left: 0;
   text-align: center;
 }
@@ -11152,6 +11153,7 @@ header .account_menu.nologin {
   header .account_menu.nologin {
     position: static;
     text-align: right;
+    transform: none;
   }
 }
 
@@ -11328,6 +11330,19 @@ main > div {
   #app .content {
     width: calc(100% - 140px);
   }
+}
+
+#visual-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+#visual-image {
+  width: 90%;
+  max-width: 1000px;
 }
 
 .account_menu a {

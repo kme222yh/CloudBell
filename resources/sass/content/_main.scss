@@ -122,3 +122,16 @@ $opener-width: 70px;
         width: calc(100% - #{$menu-width});
     }
 }
+
+
+#visual-wrap{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+#visual-image{
+    width: 90%;
+    max-width: 1000px;
+}
