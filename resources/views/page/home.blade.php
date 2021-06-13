@@ -7,7 +7,5 @@
 
 
 @section('content')
-<div id="visual-wrap">
-    <img id="visual-image" src="{{asset('image/CloudBell-logo.png')}}" alt="">
-</div>
+<div id="visual-wrap"/>
 @endsection

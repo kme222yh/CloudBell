@@ -125,13 +125,13 @@ $opener-width: 70px;
 
 
 #visual-wrap{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-}
-#visual-image{
     width: 90%;
-    max-width: 1000px;
+    max-width: 800px;
+    margin: 0 auto;
+    margin-top: 50px;
+    height: calc(100% - 50px);
+    background-image: url(https://crowdsecretary.jpn.org/image/CloudBell-logo.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }
