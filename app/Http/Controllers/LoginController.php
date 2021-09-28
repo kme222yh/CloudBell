@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Container\LineEntrance;
 use Validator;
 
-use App\User;
+use Database\Seeders\DemoUserSeeder;
 
 class LoginController extends Controller
 {
@@ -53,7 +53,9 @@ class LoginController extends Controller
     public function logout(Request $request, LineEntrance $line){
         if($line->user){
             Cookie::queue('id', null, time() - 3600);
-            $line->revoke_access_token();
+            if($line->user->id != DemoUserSeeder::$GUEST){
+                $line->revoke_access_token();
+            }
         }
         return redirect('/');
     }
@@ -62,8 +64,10 @@ class LoginController extends Controller
     public function withdraw(Request $request, LineEntrance $line){
         if($line->user){
             Cookie::queue('id', null, time() - 3600);
-            $line->revoke_access_token();
-            $line->user->delete();
+            if($line->user->id != DemoUserSeeder::$GUEST){
+                $line->revoke_access_token();
+                $line->user->delete();
+            }
         }
         return redirect('/');
     }

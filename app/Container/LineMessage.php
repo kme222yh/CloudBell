@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Carbon;
 use App\CalendarSchedule;
+use Database\Seeders\DemoUserSeeder;
 
 class LineMessage
 {
@@ -18,6 +19,7 @@ class LineMessage
 
         $params = [];
         foreach($schedules as $schedule){
+            if($schedule->user_id == DemoUserSeeder::$GUEST)  continue;
             $message = '';
             foreach($schedule->plan->body as $event){
                 if($event[0] == $now){

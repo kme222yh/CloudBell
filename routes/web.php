@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'MainController@index');
 
+Route::get('demo', 'DemoController@index');
+
 
 Route::get('register', 'LoginController@register');
 Route::get('login', 'LoginController@login');
